@@ -1,5 +1,7 @@
 package main
 
+import "link/cmd"
+
 func main() {
-	println("hello link")
+	cmd.Execute()
 }
