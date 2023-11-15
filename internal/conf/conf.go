@@ -24,7 +24,7 @@ var (
 	AdminServerSetting       *httpServerConf
 	SpaceXServerSetting      *httpServerConf
 	BotServerSetting         *httpServerConf
-	LocalossServerSetting    *httpServerConf
+	LocalOssServerSetting    *httpServerConf
 	FrontendWebSetting       *httpServerConf
 	DocsServerSetting        *httpServerConf
 	MobileServerSetting      *grpcServerConf
@@ -54,18 +54,21 @@ var (
 )
 
 func Initial() {
-	err := setupSetting()
+	err := setupSettings()
 	if err != nil {
-		log.Fatalf("init.setupSetting error: %v", err)
+		log.Fatalf("init.setupSettings error: %v", err)
 	}
+	setupLogger()
+	initSentry()
 }
 
-func setupSetting() error {
+func setupSettings() error {
 	vp, err := newViper()
 	if err != nil {
 		return err
 	}
 
+	// 初始化Features类下的配置
 	ss, kv := featuresInfoFrom(vp, "Features")
 	cfg.Initial(ss, kv)
 
@@ -75,7 +78,7 @@ func setupSetting() error {
 			return err
 		}
 	}
-
+	timeSetting()
 	return nil
 }
 
@@ -92,7 +95,7 @@ func mappingConfig() map[string]any {
 		"AdminServer":       &AdminServerSetting,
 		"SpaceXServer":      &SpaceXServerSetting,
 		"BotServer":         &BotServerSetting,
-		"LocalossServer":    &LocalossServerSetting,
+		"LocalOssServer":    &LocalOssServerSetting,
 		"FrontendWebServer": &FrontendWebSetting,
 		"DocsServer":        &DocsServerSetting,
 		"MobileServer":      &MobileServerSetting,

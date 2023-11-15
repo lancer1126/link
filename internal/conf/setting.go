@@ -3,7 +3,9 @@ package conf
 import (
 	"bytes"
 	_ "embed"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"strings"
 	"time"
 )
 
@@ -89,18 +91,18 @@ type appConf struct {
 }
 
 type cacheConf struct {
-	KeyPoolSize          int
-	CientSideCacheExpire time.Duration
-	UnreadMsgExpire      int64
-	UserTweetsExpire     int64
-	IndexTweetsExpire    int64
-	MessagesExpire       int64
-	IndexTrendsExpire    int64
-	TweetCommentsExpire  int64
-	OnlineUserExpire     int64
-	UserInfoExpire       int64
-	UserProfileExpire    int64
-	UserRelationExpire   int64
+	KeyPoolSize           int
+	ClientSideCacheExpire time.Duration
+	UnreadMsgExpire       int64
+	UserTweetsExpire      int64
+	IndexTweetsExpire     int64
+	MessagesExpire        int64
+	IndexTrendsExpire     int64
+	TweetCommentsExpire   int64
+	OnlineUserExpire      int64
+	UserInfoExpire        int64
+	UserProfileExpire     int64
+	UserRelationExpire    int64
 }
 
 type eventManagerConf struct {
@@ -294,6 +296,27 @@ type WebProfileConf struct {
 	CopyrightRightLink        string `json:"copyright_right_link"`
 }
 
+func (s *loggerConf) logLevel() logrus.Level {
+	switch strings.ToLower(s.Level) {
+	case "panic":
+		return logrus.PanicLevel
+	case "fatal":
+		return logrus.FatalLevel
+	case "error":
+		return logrus.ErrorLevel
+	case "warn", "warning":
+		return logrus.WarnLevel
+	case "info":
+		return logrus.InfoLevel
+	case "debug":
+		return logrus.DebugLevel
+	case "trace":
+		return logrus.TraceLevel
+	default:
+		return logrus.ErrorLevel
+	}
+}
+
 func newViper() (*viper.Viper, error) {
 	vp := viper.New()
 	vp.SetConfigName("config")
@@ -326,4 +349,16 @@ func featuresInfoFrom(vp *viper.Viper, k string) (map[string][]string, map[strin
 		}
 	}
 	return suites, kv
+}
+
+func timeSetting() {
+	CacheSetting.ClientSideCacheExpire *= time.Second
+	EventManagerSetting.TickWaitTime *= time.Second
+	MetricManagerSetting.TickWaitTime *= time.Second
+	JWTSetting.Expire *= time.Second
+	SimpleCacheIndexSetting.CheckTickDuration *= time.Second
+	SimpleCacheIndexSetting.ExpireTickDuration *= time.Second
+	BigCacheIndexSetting.ExpireInSecond *= time.Second
+	RedisCacheIndexSetting.ExpireInSecond *= time.Second
+	redisSetting.ConnWriteTimeout *= time.Second
 }

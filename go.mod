@@ -4,9 +4,12 @@ go 1.20
 
 require (
 	github.com/alimy/tryst v0.8.3
+	github.com/getsentry/sentry-go v0.24.1
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.16.0
 	go.uber.org/automaxprocs v1.5.3
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (
