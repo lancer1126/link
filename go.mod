@@ -10,6 +10,7 @@ require (
 	github.com/spf13/viper v1.16.0
 	go.uber.org/automaxprocs v1.5.3
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
+	github.com/Masterminds/semver/v3 v3.2.1
 )
 
 require (

@@ -54,15 +54,15 @@ var (
 )
 
 func Initial() {
-	err := setupSettings()
+	err := initSettings()
 	if err != nil {
-		log.Fatalf("init.setupSettings error: %v", err)
+		log.Fatalf("init.initSettings error: %v", err)
 	}
-	setupLogger()
+	initLogger()
 	initSentry()
 }
 
-func setupSettings() error {
+func initSettings() error {
 	vp, err := newViper()
 	if err != nil {
 		return err

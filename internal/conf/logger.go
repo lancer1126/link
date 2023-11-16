@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func setupLogger() {
+func initLogger() {
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	logrus.SetLevel(loggerSetting.logLevel())
 
